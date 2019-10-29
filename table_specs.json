@@ -16,7 +16,7 @@
          "api_link",
          "is_active"
       ],
-      "cast_columns":null
+      "cast_dtypes":null
    },
    "division":{
       "select_columns":[
@@ -37,7 +37,7 @@
          "api_link",
          "is_active"
       ],
-      "cast_columns":null
+      "cast_dtypes":null
    },
    "team":{
       "select_columns":[
@@ -70,7 +70,7 @@
          "api_link",
          "is_active"
       ],
-      "cast_columns":{
+      "cast_dtypes":{
          "first_year_of_play":"integer"
       }
    },
@@ -129,7 +129,7 @@
          "api_link",
          "is_active"
       ],
-      "cast_columns":{
+      "cast_dtypes":{
          "primary_number":"integer"
       }
    },
@@ -180,7 +180,7 @@
          "api_link",
          "content_link"
       ],
-      "cast_columns":{
+      "cast_dtypes":{
          "season":"integer",
          "status_code":"integer",
          "venue_id":"integer"
@@ -275,7 +275,7 @@
          "shutouts",
          "time_on_ice"
       ],
-      "cast_columns":{
+      "cast_dtypes":{
          "game_id":"integer",
          "points":"integer",
          "goals":"integer",
@@ -341,7 +341,7 @@
          "wild_card_rank",
          "last_updated"
       ],
-      "cast_columns":{
+      "cast_dtypes":{
          "division_rank":"integer",
          "division_l10_rank":"integer",
          "division_road_rank":"integer",
