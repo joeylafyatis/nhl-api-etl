@@ -4,33 +4,35 @@ import pandas as pd
 import requests
 import sqlite3
 
-NHL_API = 'https://statsapi.web.nhl.com/api/v1/{}'
 NHL_DB = sqlite3.connect('nhl.db')
+NHL_API = 'https://statsapi.web.nhl.com/api/v1/{}'
 
+# BEGIN WIP
 standard_get = lambda x: requests.get(NHL_API.format(x)).json()
-# concat_df = lambda x: pd.concat([ pd.io.json.json_normalize(x)
-
 # def standard_get(base,modifier):
 #     r = requests.get(NHL_API.format(base)).json()
 #     #incorporate modifier?
+# 
+# concat_df = lambda x: pd.concat([ pd.io.json.json_normalize(x)
+# END WIP
 
 def refresh_table(df_source,db_table):
     with open('table_specs.json') as f:
-        data = json.load(f)[db_table]
-    df_source = df_source[data['select_columns']]
-    df_source.columns = data['rename_columns']
+        spec = json.load(f)[db_table]
+    df_source = df_source[spec['select_col']]
+    df_source.columns = spec['rename_col']
     df_source.to_sql(
         name=db_table,
         con=NHL_DB,
         if_exists='replace',
         index=0,
-        dtype=data['cast_dtypes']
+        dtype=spec['cast_dtypes']
     )
 
-def standard_refresh(endpoint):
-    r = standard_get(endpoint)[endpoint]
+def standard_refresh(api_endpoint):
+    r = standard_get(api_endpoint)[api_endpoint]
     df = pd.concat([ pd.io.json.json_normalize(x,sep='_') for x in r ],sort=1)
-    refresh_table(df,endpoint[:-1])
+    refresh_table(df,api_endpoint[:-1])
 
 def refresh_players():
     team_ids = NHL_DB.cursor().execute('SELECT team_id FROM team;')
@@ -78,7 +80,7 @@ def refresh_standings():
     refresh_table(df_standings,'standings')
 
 def main():
-    [ standard_refresh(x) for x in ['conferences', 'divisions', 'teams'] ]
+    [ standard_refresh(x) for x in ['conferences', 'divisions', 'teams'] ] #push "refresh_type" into table_specs?
     refresh_players()
     refresh_games()
     refresh_gamelogs()

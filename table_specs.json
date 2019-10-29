@@ -1,6 +1,6 @@
 {
    "conference":{
-      "select_columns":[
+      "select_col":[
          "id",
          "name",
          "shortName",
@@ -8,7 +8,7 @@
          "link",
          "active"
       ],
-      "rename_columns":[
+      "rename_col":[
          "conference_id",
          "conference_name",
          "conference_shortname",
@@ -19,7 +19,7 @@
       "cast_dtypes":null
    },
    "division":{
-      "select_columns":[
+      "select_col":[
          "id",
          "name",
          "nameShort",
@@ -28,7 +28,7 @@
          "link",
          "active"
       ],
-      "rename_columns":[
+      "rename_col":[
          "division_id",
          "division_name",
          "division_shortname",
@@ -40,7 +40,7 @@
       "cast_dtypes":null
    },
    "team":{
-      "select_columns":[
+      "select_col":[
          "id",
          "name",
          "shortName",
@@ -55,7 +55,7 @@
          "link",
          "active"
       ],
-      "rename_columns":[
+      "rename_col":[
          "team_id",
          "team_fullname",
          "team_shortname",
@@ -75,7 +75,7 @@
       }
    },
    "player":{
-      "select_columns":[
+      "select_col":[
          "id",
          "firstName",
          "lastName",
@@ -102,7 +102,7 @@
          "link",
          "active"
       ],
-      "rename_columns":[
+      "rename_col":[
          "player_id",
          "player_firstname",
          "player_lastname",
@@ -134,7 +134,7 @@
       }
    },
    "game":{
-      "select_columns":[
+      "select_col":[
          "gamePk",
          "gameDate",
          "season",
@@ -157,7 +157,7 @@
          "link",
          "content_link"
       ],
-      "rename_columns":[
+      "rename_col":[
          "game_id",
          "game_datetime",
          "season",
@@ -187,7 +187,7 @@
       }
    },
    "gamelog":{
-      "select_columns":[
+      "select_col":[
          "player_id",
          "game_gamePk",
          "stat_assists",
@@ -231,7 +231,7 @@
          "stat_shutouts",
          "stat_timeOnIce"
       ],
-      "rename_columns":[
+      "rename_col":[
          "player_id",
          "game_id",
          "assists",
@@ -285,7 +285,7 @@
       }
    },
    "standings":{
-      "select_columns":[
+      "select_col":[
          "division_id",
          "divisionRank",
          "id",
@@ -313,7 +313,7 @@
          "wildCardRank",
          "lastUpdated"
       ],
-      "rename_columns":[
+      "rename_col":[
          "division_id",
          "division_rank",
          "team_id",
