@@ -53,8 +53,8 @@ def refresh_player(table,spec):
 
 def refresh_game(table,spec):
     [current_season] = lambda_get('seasons/current')['seasons']
-    endpoint = spec['api_endpoint'].format( **current_season)
-    games = [ e['games'] for e in lambda_get(endpoint)['dates'] ]
+    dates = lambda_get(spec['api_endpoint'].format( **current_season))['dates']
+    games = [ d['games'] for d in dates ]
     return lambda_df(games)
 
 def refresh_gamelog(table,spec):
@@ -73,8 +73,7 @@ def refresh_gamelog(table,spec):
     # player_ids = [ p[0] for p in NHL_DB.cursor().execute(sql).fetchall() ]
     # endpoints = [ spec['api_endpoint'].format(p) for p in player_ids ]
     # gamelogs = [ lambda_get(e)['stats'][0]['splits'] for e in endpoints ]
-    # df_gamelogs = lambda_df(gamelogs)
-    # ...
+    # return lambda_df(gamelogs)
 
 def refresh_standings(table,spec):
     standings = lambda_get(spec['api_endpoint'])['records']
