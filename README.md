@@ -3,10 +3,9 @@
 This repo contains a Python script ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) that reads and operates on a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) that define which endpoints from the NHL's publicly-available API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)) can be accessed to organize a set of hockey data into a normalized relational database structure. The script pulls and transforms datasets to create the schema architecture and relies primarily on the *pandas* library to assemble and load representative DataFrames into a SQLite database file available for further querying and analysis ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)).
 
 ## Data Flow Diagram
-
-Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. 
-
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
+
+Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) select the appropriate user-defined functions for transformation, and (3) create and insert the output into a table with the desired columns, headers, and data types. Table specifications implement the following syntax:
 
 ## Entity-Relationship Diagram
 
