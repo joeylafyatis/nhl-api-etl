@@ -10,7 +10,7 @@ The Python script in this repo ([*refresh_db.py*](https://github.com/joeylafyati
 
 ## Data Flow Diagram
 
-Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) execute the appropriate transformative functions, and (3) create and insert the DataFrame output into a SQLite table with the desired columns, headers, and data types.
+Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) execute the appropriate transformative functions, and (3) create and insert an output DataFrame into a SQLite table with the desired columns, headers, and data types.
 
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
 
