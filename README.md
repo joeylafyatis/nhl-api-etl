@@ -6,11 +6,11 @@
 * [Table Specifications](https://github.com/joeylafyatis/nhl-api-etl/blob/master/README.md#table-specifications) 
 * [Entity-Relationship Diagram](https://github.com/joeylafyatis/nhl-api-etl/blob/master/README.md#entity-relationship-diagram)
 
-The Python script in this repo ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) iterates through a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) that define available endpoints from the NHL's public API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)) and transforms the requested datasets into a normalized relational database structure. The script relies primarily on the *pandas* library to build DataFrames and load them into a SQLite database file for further querying and analysis ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)).
+The Python script in this repo ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) iterates through a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) that define available endpoints from the NHL's public API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)) and transforms the requested datasets into a normalized relational database structure. Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) execute the appropriate transformative functions, and (3) insert an output into a SQLite table with the desired columns, headers, and data types. The script relies primarily on the *pandas* library to build DataFrames and load them into the database file for further querying and analysis ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)).
 
 ## Data Flow Diagram
 
-Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) execute the appropriate transformative functions, and (3) create and insert an output DataFrame into a SQLite table with the desired columns, headers, and data types.
+
 
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
 
