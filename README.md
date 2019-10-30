@@ -5,7 +5,9 @@ This repo contains a Python script ([*refresh_db.py*](https://github.com/joeylaf
 ## Data Flow Diagram
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
 
-Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) select the appropriate user-defined functions for transformation, and (3) create and insert the output into a table with the desired columns, headers, and data types. Table specifications implement the following structure:
+Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) select the appropriate user-defined functions for transformation, and (3) create and insert the output into a table with the desired columns, headers, and data types.
+
+Table specifications implement the following structure:
 
 ```python
 "table_name": {               #string to use for the resulting table name, also used to identify non-standard refresh functions
