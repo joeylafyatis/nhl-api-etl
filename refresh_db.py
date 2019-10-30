@@ -60,20 +60,17 @@ def refresh_game(table,spec):
 def refresh_gamelog(table,spec):
     sql = 'SELECT player_id FROM player;'
     player_ids = [ p[0] for p in NHL_DB.cursor().execute(sql).fetchall() ]
+
     df_gamelogs = pd.DataFrame()
     for p in player_ids:
-        api = spec['api_endpoint'].format(p)
-        get_stats = lambda_get(api)['stats'][0]['splits']
-        df_stats = pd.io.json.json_normalize(get_stats,sep='_')
-        df_stats['player_id'] = p
-        df_gamelogs = df_gamelogs.append(df_stats,sort=1)
+        endpoint = spec['api_endpoint'].format(p)
+        splits = lambda_get(endpoint)['stats'][0]['splits']
+        if len(splits) == 0:
+            continue
+        df_splits = lambda_df(splits)
+        df_splits['player_id'] = p
+        df_gamelogs = df_gamelogs.append(df_splits,sort=1)
     return df_gamelogs
-
-    # sql = 'SELECT player_id FROM player;'
-    # player_ids = [ p[0] for p in NHL_DB.cursor().execute(sql).fetchall() ]
-    # endpoints = [ spec['api_endpoint'].format(p) for p in player_ids ]
-    # gamelogs = [ lambda_get(e)['stats'][0]['splits'] for e in endpoints ]
-    # return lambda_df(gamelogs)
 
 def refresh_standings(table,spec):
     standings = lambda_get(spec['api_endpoint'])['records']
