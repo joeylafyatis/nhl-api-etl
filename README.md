@@ -42,4 +42,4 @@ It uses a dictionary of over 200 Latin words, combined with a handful of model s
 
 ## Happy Birthday!
 
-To the Vegas Golden Knights fan in my life that inspired this project :)
+To the Golden Knights fan in my life that inspired this project :)
