@@ -10,10 +10,10 @@ Each table specification in [*table_specs.json*](https://github.com/joeylafyatis
 Table specifications implement the following structure:
 
 ```python
-"table_name": {               #string used to name SQL table and identify non-standard refresh functions
+"table_name": {               #names SQL table and identifies non-standard refresh functions
   "standard_refresh": bool,   #whether the specification follows an identified standard pattern
   "api_endpoint": str,        #relevant NHL API endpoint from which to request data
-  "select_col": [             #list of columns from transformed DataFrame to be loaded into the database
+  "select_col": [             #list of columns from DataFrame to be loaded into SQL table
     "columnA",
     "columnB",
     "columnC",
@@ -25,7 +25,7 @@ Table specifications implement the following structure:
     "column_c",
     ...
   ],   
-  "cast_dtypes": {            #dictionary of data types to cast for the columns renamed in "rename_col"
+  "cast_dtypes": {            #dictionary of data types to cast for the columns in "rename_col"
     "column_b": "integer",
     "column_c": "integer"
   }
