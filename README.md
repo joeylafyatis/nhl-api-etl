@@ -1,5 +1,11 @@
 # ETL from NHL API to SQLite Database
 
+**Table of Contents**
+
+Data Flow Diagram
+Table Specifications
+Entity-Relationship Diagram
+
 This repo contains a Python script ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) that reads and operates on a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) that define which endpoints from the NHL's publicly-available API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)) can be accessed to organize a set of hockey data into a normalized relational database structure. The script relies primarily on the *pandas* library to assemble and load representative DataFrames into a SQLite database file available for further querying and analysis ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)).
 
 ## Data Flow Diagram
