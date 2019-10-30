@@ -6,14 +6,14 @@
 * [Table Specifications](https://github.com/joeylafyatis/nhl-api-etl/blob/master/README.md#table-specifications) 
 * [Entity-Relationship Diagram](https://github.com/joeylafyatis/nhl-api-etl/blob/master/README.md#entity-relationship-diagram)
 
-The Python script in this repo ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) iterates through a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) that contain (1) an available endpoint in the NHL's public API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)), (2) the appropriate user-defined functions in [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to transform the request data into a *pandas* DataFrame, and (3) column, header, and data type definitions to insert the result into a SQLite datbase file ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)) so that it can be queried from the command line or using an RDBMS (I've been using the free tier of [DbVisualizer](https://www.dbvis.com/)).
+[*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) iterates through a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) that contain (1) available endpoints to extract data from the NHL's public API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)), (2) the appropriate user-defined functions in [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to transform that data into a *pandas* DataFrame, and (3) column, header, and data type definitions to load the resulting DataFrame into a SQLite datbase file ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)) so that it can be queried from the command line or using an RDBMS (I've been using the free tier of [DbVisualizer](https://www.dbvis.com/)).
 
 ## Data Flow Diagram
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
 
 ## Table Specifications
 
-Table specifications implement the following structure:
+Table specifications are structured as follows:
 
 ```python
 "table_name": {               #names SQL table and identifies non-standard refresh functions
