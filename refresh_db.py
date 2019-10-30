@@ -10,7 +10,7 @@ NHL_DB = sqlite3.connect('nhl.db')
 lambda_get = lambda x: requests.get(NHL_API.format(x)).json()
 lambda_df = lambda x: pd.concat([ pd.io.json.json_normalize(y,sep='_') for y in x ],sort=1)
 
-def refresh_table(df,table,spec):
+def refresh_table(table,spec,df):
     print('Starting table refresh for {}...'.format(table))
     df = df[spec['select_col']]
     df.columns = spec['rename_col']
@@ -23,13 +23,12 @@ def refresh_table(df,table,spec):
     )
     print('Finished table refresh for {}.'.format(table))
 
-def iter_tables(table,spec):
+def request_api(table,spec):
     print('Accessing NHL API for {}...'.format(table))
     if spec['standard_refresh']:
         endpoint = spec['api_endpoint']
         get = lambda_get(endpoint)[endpoint]
         df = lambda_df(get)
-        refresh_table(df,table,spec)
     else:
         func_switch = {
             'player': refresh_player,
@@ -37,7 +36,8 @@ def iter_tables(table,spec):
             'gamelog': refresh_gamelog,
             'standings': refresh_standings
         }
-        func_switch[table](table,spec)
+        df = func_switch[table](table,spec)
+    return { 'table': table, 'spec': spec, 'df': df }
 
 def refresh_player(table,spec):
     team_ids = NHL_DB.cursor().execute('SELECT team_id FROM team;').fetchall()
@@ -48,15 +48,13 @@ def refresh_player(table,spec):
     player_ids = df_rosters['person_id'].tolist()
     endpoints = [ spec['api_endpoint'].format(p) for p in player_ids ]
     players = [ lambda_get(e)['people'] for e in endpoints ]
-    df_players = lambda_df(players)
-    refresh_table(df_players,table,spec)
+    return lambda_df(players)
 
 def refresh_game(table,spec):
     [current_season] = lambda_get('seasons/current')['seasons']
     endpoint = spec['api_endpoint'].format( **current_season)
-    games = [ g['games'] for g in lambda_get(endpoint)['dates'] ]
-    df_games = lambda_df(games)
-    refresh_table(df_games,table,spec)
+    games = [ e['games'] for e in lambda_get(endpoint)['dates'] ]
+    return lambda_df(games)
 
 def refresh_gamelog(table,spec):
     player_ids = NHL_DB.cursor().execute('SELECT player_id FROM player;')
@@ -68,9 +66,9 @@ def refresh_gamelog(table,spec):
         df_stats = pd.io.json.json_normalize(get_stats,sep='_')
         df_stats['player_id'] = player_id
         df_gamelogs = df_gamelogs.append(df_stats,sort=1)
-    refresh_table(df_gamelogs,table,spec)
+    return df_gamelogs
 
-    # endpoints = [ 'people/{}/stats?stats=gameLog&season=20192020'.format(p[0]) for p in player_ids.fetchall() ]
+    # endpoints = [ spec['api_endpoint'].format(p[0]) for p in player_ids.fetchall() ]
     # gamelogs = [ lambda_get(e)['stats'][0]['splits'] for e in endpoints ]
     # df_gamelogs = lambda_df(stats)
     # ...
@@ -85,13 +83,12 @@ def refresh_standings(table,spec):
     for x in ['teamRecords','team','leagueRecord','streak']:
         df_standings = pd.concat([df_standings,df_standings[x].apply(pd.Series)],axis=1)
     # END GARBAGE
-    refresh_table(df_standings,table,spec)
+    return df_standings
 
 def main():
     with open('table_specs.json') as f:
-        [ iter_tables(k,v) for k,v in json.load(f).items() ]
+        table_specs = json.load(f).items()
+        full_refresh = [ refresh_table( **request_api(k,v)) for k,v in table_specs ]
 
 if __name__ == '__main__':
     main()
-
-# NOTE TO SELF: move endpoint strings into table_specs.json
