@@ -7,6 +7,29 @@ This repo contains a Python script ([*refresh_db.py*](https://github.com/joeylaf
 
 Each table specification in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json) defines the elements required by [*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) to (1) request data from an NHL API endpoint, (2) select the appropriate user-defined functions for transformation, and (3) create and insert the output into a table with the desired columns, headers, and data types. Table specifications implement the following syntax:
 
+```python
+"table_name": {               #string to use for the resulting table name, also used to identify non-standard refresh functions
+  "standard_refresh": bool,   #whether the specification follows an identified standard pattern, or otherwise relies on its own non-standard refresh function(s)
+  "api_endpoint": str,        #relevant NHL API endpoint from which to request data
+  "select_col": [             #list of columns from transformed DataFrame to be loaded into the database
+    "columnA",
+    "columnB",
+    "columnC",
+    ...
+  ],     
+  "rename_col": [             #list of headers for the columns in "select_col"
+    "column_a",
+    "column_b",
+    "column_c",
+    ...
+  ],   
+  "cast_dtypes": {            #dictionary of data types to cast for the columns renamed in "rename_col"
+    "column_b": "integer",
+    "column_c": "integer"
+  }
+}
+```
+
 ## Entity-Relationship Diagram
 
 There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. 
