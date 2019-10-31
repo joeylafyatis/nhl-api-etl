@@ -1,6 +1,6 @@
 # ETL from NHL API to SQLite Database
 
-([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) iterates through a dictionary of table specifications (in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) to:
+[*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py) iterates through a dictionary of table specifications ([*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) to:
 
 1. extract data from endpoints in the NHL's publicly-available API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi))
 2. transform that data into *pandas* DataFrames
