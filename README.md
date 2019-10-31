@@ -6,7 +6,7 @@
 * [Table Specifications](https://github.com/joeylafyatis/nhl-api-etl/blob/master/README.md#table-specifications) 
 * [Entity-Relationship Diagram](https://github.com/joeylafyatis/nhl-api-etl/blob/master/README.md#entity-relationship-diagram)
 
-This repo contains a Python script ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) that iterates through a dictionary of table specifications (in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) to (1) extract data available from endpoints in the NHL's API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)), (2) transform that data into *pandas* DataFrames, and (3) load those DataFrames as tables into a SQLite datbase file ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)) so that it can be queried from the command line or using an RDBMS (I've been using the free tier of [DbVisualizer](https://www.dbvis.com/)).
+This repo contains a Python script ([*refresh_db.py*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/refresh_db.py)) that iterates through a dictionary of table specifications (in [*table_specs.json*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/table_specs.json)) to (1) extract data available from endpoints in the NHL's API ([documentation by Drew Hynes](https://gitlab.com/dword4/nhlapi)), (2) transform that data into *pandas* DataFrames, and (3) load those DataFrames as tables into a SQLite datbase file ([*nhl.db*](https://github.com/joeylafyatis/nhl-api-etl/blob/master/nhl.db)) so that it can be queried from the command line or using an RDBMS.
 
 ## Data Flow Diagram
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
