@@ -8,12 +8,12 @@ NHL_API = 'https://statsapi.web.nhl.com/api/v1/{}'
 NHL_DB = sqlite3.connect('nhl.db')
 
 lambda_get = lambda x: requests.get(NHL_API.format(x)).json()
-lambda_df = lambda x: pd.concat([ pd.io.json.json_normalize(y,sep='_') for y in x ],sort=1)
+lambda_df = lambda y: pd.concat([ pd.io.json.json_normalize(z,sep='_') for z in y ],sort=1)
 
 def refresh_table(table,spec,df):
     print('Starting table refresh for {}...'.format(table))
-    df = df[spec['select_col']]
-    df.columns = spec['rename_col']
+    df = df[spec['columns']]
+    df.columns = spec['rename_headers']
     df.to_sql(
         name=table,
         con=NHL_DB,

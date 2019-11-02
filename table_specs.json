@@ -2,7 +2,7 @@
    "conference":{
       "standard_refresh":true,
       "api_endpoint":"conferences",
-      "select_col":[
+      "columns":[
          "id",
          "name",
          "shortName",
@@ -10,7 +10,7 @@
          "link",
          "active"
       ],
-      "rename_col":[
+      "rename_headers":[
          "conference_id",
          "conference_name",
          "conference_shortname",
@@ -23,7 +23,7 @@
    "division":{
       "standard_refresh":true,
       "api_endpoint":"divisions",
-      "select_col":[
+      "columns":[
          "id",
          "name",
          "nameShort",
@@ -32,7 +32,7 @@
          "link",
          "active"
       ],
-      "rename_col":[
+      "rename_headers":[
          "division_id",
          "division_name",
          "division_shortname",
@@ -46,7 +46,7 @@
    "team":{
       "standard_refresh":true,
       "api_endpoint":"teams",
-      "select_col":[
+      "columns":[
          "id",
          "name",
          "shortName",
@@ -61,7 +61,7 @@
          "link",
          "active"
       ],
-      "rename_col":[
+      "rename_headers":[
          "team_id",
          "team_fullname",
          "team_shortname",
@@ -83,7 +83,7 @@
    "player":{
       "standard_refresh":false,
       "api_endpoint":"people/{}",
-      "select_col":[
+      "columns":[
          "id",
          "firstName",
          "lastName",
@@ -110,7 +110,7 @@
          "link",
          "active"
       ],
-      "rename_col":[
+      "rename_headers":[
          "player_id",
          "player_firstname",
          "player_lastname",
@@ -144,7 +144,7 @@
    "game":{
       "standard_refresh":false,
       "api_endpoint":"schedule?startDate={regularSeasonStartDate}&endDate={regularSeasonEndDate}",
-      "select_col":[
+      "columns":[
          "gamePk",
          "gameDate",
          "season",
@@ -167,7 +167,7 @@
          "link",
          "content_link"
       ],
-      "rename_col":[
+      "rename_headers":[
          "game_id",
          "game_datetime",
          "season",
@@ -199,7 +199,7 @@
    "gamelog":{
       "standard_refresh":false,
       "api_endpoint":"people/{}/stats?stats=gameLog&season=20192020",
-      "select_col":[
+      "columns":[
          "player_id",
          "game_gamePk",
          "stat_assists",
@@ -243,7 +243,7 @@
          "stat_shutouts",
          "stat_timeOnIce"
       ],
-      "rename_col":[
+      "rename_headers":[
          "player_id",
          "game_id",
          "assists",
@@ -322,7 +322,7 @@
    "standings":{
       "standard_refresh":false,
       "api_endpoint":"standings",
-      "select_col":[
+      "columns":[
          "team_id",
          "divisionRank",
          "points",
@@ -349,7 +349,7 @@
          "wildCardRank",
          "lastUpdated"
       ],
-      "rename_col":[
+      "rename_headers":[
          "team_id",
          "division_rank",
          "points",
