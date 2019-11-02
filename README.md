@@ -17,13 +17,13 @@ Table specifications implement the following structure:
 "table_name": {               #names SQL table and identifies non-standard refresh functions
   "standard_refresh": bool,   #whether the specification follows an identified standard pattern
   "api_endpoint": str,        #relevant NHL API endpoint from which to request data
-  "select_col": [             #list of columns from DataFrame to be loaded into SQL table
+  "columns": [                #list of columns from DataFrame to be loaded into SQL table
     "columnA",
     "columnB",
     "columnC",
     ...
   ],     
-  "rename_col": [             #list of headers for the columns in "select_col"
+  "rename_headers": [         #list of headers for the columns in "select_col"
     "column_a",
     "column_b",
     "column_c",
