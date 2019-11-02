@@ -15,7 +15,7 @@ Table specifications implement the following structure:
 
 ```python
 "table_name": {               #names SQL table and identifies non-standard refresh functions
-  "standard_refresh": bool,   #whether the specification follows an identified standard pattern
+  "standard_refresh": bool,   #whether the specification implements the standard refresh function
   "api_endpoint": str,        #relevant NHL API endpoint from which to request data
   "columns": [                #list of columns from DataFrame to be loaded into SQL table
     "columnA",
