@@ -38,6 +38,3 @@ Table specifications implement the following structure:
 
 ## Entity-Relationship Diagram
 ![Entity-Relationship Diagram](readme_diagrams/entity_relationship.svg)
-
-## Happy Birthday!
-to the Golden Knights fan in my life that inspired this project :)
