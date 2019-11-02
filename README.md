@@ -9,7 +9,7 @@
 ## Data Flow Diagram
 ![Data Flow Diagram](readme_diagrams/data_flow.svg)
 
-## Table Specifications
+## _table_specs.json_ Table Specifications
 
 Table specifications implement the following structure:
 
@@ -36,5 +36,5 @@ Table specifications implement the following structure:
 }
 ```
 
-## Entity-Relationship Diagram
+## _nhl.db_ Entity-Relationship Diagram
 ![Entity-Relationship Diagram](readme_diagrams/entity_relationship.svg)
