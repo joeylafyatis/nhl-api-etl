@@ -13,7 +13,7 @@ lambda_df = lambda y: pd.concat([ pd.io.json.json_normalize(z,sep='_') for z in 
 def refresh_table(table,spec,df):
     print('Starting table refresh for {}...'.format(table))
     df = df[spec['columns']]
-    df.columns = spec['rename_headers']
+    df = df.rename(columns=spec['rename_headers'])
     df.to_sql(
         name=table,
         con=NHL_DB,
