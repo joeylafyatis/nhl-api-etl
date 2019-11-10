@@ -14,21 +14,21 @@
 Table specifications implement the following structure:
 
 ```python
-"table_name": {               #names SQL table and identifies non-standard refresh functions
+"table_name": {               #names the SQL table and identifies non-standard refresh functions
   "standard_refresh": bool,   #whether the specification implements the standard refresh function
-  "api_endpoint": str,        #relevant NHL API endpoint from which to request data
+  "api_endpoint": str,        #names the NHL API endpoint from which to request data
   "columns": [                #list of columns from DataFrame to be loaded into SQL table
     "columnA",
     "columnB",
     "columnC",
     ...
   ],     
-  "rename_headers": {         #dictionary of headers to rename the columns in "select_col"
+  "rename_headers": {         #dictionary of headers to rename for the columns in "columns"
     "columnA":"column_a",
     "columnB":"column_b",
     ...
   },   
-  "cast_dtypes": {            #dictionary of data types to cast for the columns in "rename_col"
+  "cast_dtypes": {            #dictionary of data types to cast for the renamed columns in "columns"
     "column_b": "integer",
     "columnC": "integer"
   }
