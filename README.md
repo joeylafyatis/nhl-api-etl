@@ -23,18 +23,20 @@ Table specifications implement the following structure:
     "columnC",
     ...
   ],     
-  "rename_headers": [         #list of headers for the columns in "select_col"
-    "column_a",
-    "column_b",
-    "column_c",
+  "rename_headers": {         #dictionary of headers to rename the columns in "select_col"
+    "columnA":"column_a",
+    "columnB":"column_b",
     ...
-  ],   
+  },   
   "cast_dtypes": {            #dictionary of data types to cast for the columns in "rename_col"
     "column_b": "integer",
-    "column_c": "integer"
+    "columnC": "integer"
   }
 }
 ```
 
 ## _nhl.db_ Entity-Relationship Diagram
 ![Entity-Relationship Diagram](readme_diagrams/entity_relationship.svg)
+
+## Happy Birthday!
+to the Golden Knights fan in my life that inspired this project :)
