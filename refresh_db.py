@@ -77,7 +77,7 @@ def refresh_standings(table,spec):
     df_standings = pd.concat([ lambda_df(s['teamRecords']) for s in standings ])
     return df_standings
 
-def main():
+def main(): # rewrite flow within a class, add comments
     with open('table_specs.json') as f:
         table_specs = json.load(f).items()
         full_refresh = [ refresh_table( **request_api(k,v)) for k,v in table_specs ]
