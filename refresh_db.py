@@ -52,7 +52,7 @@ def refresh_player(table,spec):
     players = [ lambda_get(e)['people'] for e in endpoints ]
     return lambda_df(players)
 
-def refresh_game(table,spec):
+def refresh_game(table,spec): #only refresh games that have changed status? 
     [current_season] = lambda_get('seasons/current')['seasons']
     dates = lambda_get(spec['api_endpoint'].format( **current_season))['dates']
     games = [ d['games'] for d in dates ]
