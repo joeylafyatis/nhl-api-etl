@@ -1,80 +1,87 @@
-import json
-import pandas as pd
-import spotipy
-import spotipy.util as util
 
+import json
+import numpy as np
+import pandas as pd
+import requests
+import sqlite3
+
+NHL_API = 'https://statsapi.web.nhl.com/api/v1/{}'
+NHL_DB = sqlite3.connect('nhl.db')
+
+lambda_get = lambda x: requests.get(NHL_API.format(x)).json()
 lambda_df = lambda y: pd.concat([ pd.io.json.json_normalize(z,sep='_') for z in y ],sort=1)
 
-class Playlist_Builder():
-    def __init__(self,credentials):
-        with open(credentials) as f:
-            self.crd = json.load(f)
-            self.token = util.prompt_for_user_token( **self.crd)
-            self.cnx = spotipy.Spotify(auth=self.token)
+def refresh_table(table,spec,df):
+    print('Starting table refresh for {}...'.format(table))
+    df = df[spec['columns']]
+    df = df.rename(columns=spec['rename_headers'])
+    df.to_sql(
+        name=table,
+        con=NHL_DB,
+        if_exists='replace',
+        index=0,
+        dtype=spec['cast_dtypes']
+    )
+    print('Finished table refresh for {}.'.format(table))
 
-        self.playlists = self.get_playlists()
-        self.tracks = self.get_tracks()
-        if self.validate_decades():
-            self.rebuild_playlists()
-            print('Success!' )
-        else:
-            print("Error! One or more tracks are in the wrong playlist!")
+def request_api(table,spec):
+    print('Accessing NHL API data for {}...'.format(table))
+    if spec['standard_refresh']:
+        endpoint = spec['api_endpoint']
+        get = lambda_get(endpoint)[endpoint]
+        df = lambda_df(get)
+    else:
+        func_switch = {
+            'player': refresh_player,
+            'game': refresh_game,
+            'gamelog': refresh_gamelog,
+            'standings': refresh_standings
+        }
+        df = func_switch[table](table,spec)
+    return { 'table': table, 'spec': spec, 'df': df }
 
-    def get_playlists(self):
-        print('Accessing Spotify API for users\' decades playlists...')
-        playlists = self.cnx.current_user_playlists()['items']
-        df_playlists = lambda_df(playlists)
-        df_playlists = df_playlists.loc[df_playlists['name'].str.match('albums_'),['id','name']]
-        df_playlists.index = list(df_playlists.name.apply(lambda x: x[7:10]))
-        return df_playlists
+def refresh_player(table,spec):
+    sql = 'SELECT team_id FROM team;'
+    team_ids = [ t[0] for t in NHL_DB.cursor().execute(sql).fetchall() ]
+    endpoints = [ 'teams/{}?expand=team.roster'.format(t) for t in team_ids ]
+    rosters = [ lambda_get(e)['teams'][0]['roster']['roster'] for e in endpoints ]
+    df_rosters = lambda_df(rosters)
 
-    def get_tracks(self):
-        print('Accessing Spotify API for decades playlists\' tracklists...')
-        df_tracks = pd.DataFrame()
-        for index,row in self.playlists.iterrows():
-            id, name = row
-            tracklist = self.cnx.user_playlist_tracks(self.crd['username'],playlist_id=id)['items']
-            df_tracklist = lambda_df(tracklist)
-            df_tracklist['playlist_key'] = index
-            df_tracklist['playlist_id'] = id
-            df_tracklist['playlist_name'] = name
-            df_tracks = df_tracks.append(df_tracklist,sort=1)
+    player_ids = df_rosters['person_id'].tolist()
+    endpoints = [ spec['api_endpoint'].format(p) for p in player_ids ]
+    players = [ lambda_get(e)['people'] for e in endpoints ]
+    return lambda_df(players)
 
-        print('Considering manual overrides of album release dates...')
-        overrides = pd.read_csv('release_date_overrides.csv',index_col=0)
-        df_tracks = df_tracks.join(overrides,on='track_uri')
-        df_tracks['release_date'] = df_tracks.release_date.combine_first(df_tracks.track_album_release_date)
-        df_tracks = df_tracks.sort_values('release_date')
-        df_tracks = df_tracks[[
-            'playlist_key'
-            , 'playlist_id'
-            , 'playlist_name'
-            , 'track_uri'
-            , 'track_album_name'
-            , 'release_date'
-        ]]
-        print('Generating \'playlist_tracks.csv\' output...')
-        df_tracks.to_csv('playlist_tracks.csv',index=False)
-        return df_tracks
+def refresh_game(table,spec):
+    [current_season] = lambda_get('seasons/current')['seasons']
+    dates = lambda_get(spec['api_endpoint'].format( **current_season))['dates']
+    games = [ d['games'] for d in dates ]
+    return lambda_df(games)
 
-    def rebuild_playlists(self):
-        print('Accessing Spotify API to rebuild users\' decades playlists...')
-        df_tracks = self.tracks
-        playlist_ids = df_tracks.playlist_id.unique()
-        tracklist = [ list(df_tracks.loc[df_tracks['playlist_id'] == p,'track_uri']) for p in playlist_ids ]
-        playlist_metadata = zip(playlist_ids,tracklist)
-        for p in playlist_metadata:
-            self.cnx.user_playlist_replace_tracks(self.crd['username'],p[0],p[1])
+def refresh_gamelog(table,spec):
+    sql = 'SELECT player_id FROM player;'
+    player_ids = [ p[0] for p in NHL_DB.cursor().execute(sql).fetchall() ]
 
-    def validate_decades(self):
-        print('Validating album release dates against decades playlists...')
-        df_tracks = self.tracks
-        release_decade = df_tracks.release_date.apply(lambda x: x[:3])
-        df_failure = df_tracks[ df_tracks.playlist_key != release_decade ]
-        return df_failure.empty
+    df_gamelogs = pd.DataFrame()
+    for p in player_ids:
+        endpoint = spec['api_endpoint'].format(p)
+        splits = lambda_get(endpoint)['stats'][0]['splits']
+        if len(splits) == 0:
+            continue
+        df_splits = lambda_df(splits)
+        df_splits['player_id'] = p
+        df_gamelogs = df_gamelogs.append(df_splits,sort=1)
+    return df_gamelogs
+
+def refresh_standings(table,spec):
+    standings = lambda_get(spec['api_endpoint'])['records']
+    df_standings = pd.concat([ lambda_df(s['teamRecords']) for s in standings ])
+    return df_standings
 
 def main():
-    sp = Playlist_Builder('credentials.json')
+    with open('table_specs.json') as f:
+        table_specs = json.load(f).items()
+        full_refresh = [ refresh_table( **request_api(k,v)) for k,v in table_specs ]
 
 if __name__ == '__main__':
     main()
