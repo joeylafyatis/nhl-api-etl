@@ -25,7 +25,7 @@ def refresh_table(table,spec,df):
     print('Finished table refresh for {}.'.format(table))
 
 def request_api(table,spec):
-    print('Accessing NHL API data for {}...'.format(table))
+    print('Accessing NHL API for {} data...'.format(table))
     if spec['standard_refresh']:
         endpoint = spec['api_endpoint']
         get = lambda_get(endpoint)[endpoint]
